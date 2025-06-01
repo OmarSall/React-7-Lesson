@@ -1,5 +1,4 @@
 import { TopPosts } from './TopPosts';
-import { PostsCounter } from './PostsCounter';
 
 export const Sidebar = () => {
     return (
