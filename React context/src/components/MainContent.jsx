@@ -5,8 +5,6 @@ import { PostsCounter } from './PostsCounter';
 export const MainContent = () => {
     const { posts, isLoading } = usePostsContext();
 
-    console.log(posts.length); // 4
-
     if (isLoading) {
         return <div>Loading...</div>;
     }

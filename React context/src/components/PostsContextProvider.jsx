@@ -16,24 +16,30 @@ export const PostsContextProvider = ({children}) => {
     }, []);
 
     const deletePost = async (postId) => {
-        await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
-            method: 'DELETE',
-        });
+        try {
+            const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
+                method: 'DELETE',
+            });
 
-        const filteredPosts = posts.filter((post) => {
-            return post.id !== postId;
-        });
-        setPosts(filteredPosts);
+            if (!response.ok) {
+                throw new Error('Failed to delete the post');
+            }
 
-        if (highlightedPostId === postId) {
-            setHighlightedPostId(null);
+            const updatedResponse = await fetch('https://jsonplaceholder.typicode.com/posts');
+            const updatedData = await updatedResponse.json();
+            setPosts(updatedData);
+
+            if (highlightedPostId === postId) {
+                setHighlightedPostId(null);
+            }
+        } catch (error) {
+            console.error('Error deleting post:', error);
         }
     };
 
     const highlightPost = (postId) => {
         setHighlightedPostId(postId);
     };
-
 
     return (
         <PostsContext.Provider
